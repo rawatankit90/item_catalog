@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}Item Category{% endblock %}
+{% block header %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class = "container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2> {{category.category_name}} </h2>
+        <p style="color:blue">
+          <!-- <a href='{{url_for('showCategoryItem', category_id = category.id) }}'> </a>-->
+            {{ item_category.category_item_description }}
+            {% if user  %}
+              <p>
+                <a href='{{url_for('editCategoryItem', item_category_id = item_category.id) }}'>Edit |</a>
+                <a href='{{url_for('deleteCategoryItem', item_category_id = item_category.id) }}'>Delete</a>
+              </p>
+            {% endif %}
+        </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

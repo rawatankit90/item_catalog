@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+{% block header %}
+{{ super() }}
+{% endblock %}
+{% block content %}
+<h1 class="text-center">Login</h1>
+<form action='{{url_for('loginValidation')}}' method = 'post'>
+    <div class="container extra-padding">
+      <label><b>Username</b></label>
+      <input type="text" placeholder="Enter Email Id" name="email_id" required>
+      <label><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="psw" required>
+      <button type="submit">Login</button>
+      <label>
+        <input type="checkbox" checked="checked"> Remember me
+      </label>
+  </div>
+</form>
+{% endblock %}

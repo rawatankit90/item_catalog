@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}HOME{% endblock %}
+{% block header %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<div class = "container">
+  {% if user  %}
+  <div class = "row text-center">
+    <p><a href='{{url_for('addcategoryitem') }}'>Add a New Category Item</a></p>
+  </div>
+  {% endif %}
+  <div class="row">
+    <div class="col-xs-4">
+    <h2> Categories </h2>
+    {% for category in categories %}
+    <ul>
+      <li style="color:blue">
+          <a href='{{url_for('showCategoryItem', category_id = category.id) }}'>{{ category.category_name }}
+          </a>
+          <p>{{ category.category_description }}
+      </p>
+      </li>
+    </ul>
+    {%endfor%}
+  </div>
+  <div class ="col-xs-8">
+    <h2> Categories Item </h2>
+    {% for item in items %}
+    <ul>
+      <a href='{{url_for('showCategoryItemDescribtion', item_category_id = item.id) }}'>
+      <li style="color:blue">{{ item.category_item_name }}
+          <!-- <p>{{ item.category_item_description }}</p> -->
+      </li>
+    </ul>
+    {%endfor%}
+  </div>
+  </div>
+</div>
+{% endblock %}

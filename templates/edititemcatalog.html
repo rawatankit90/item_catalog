@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Edit Item{% endblock %}
+{% block header %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<h1 class="text-center">Edit Item</h1>
+<form action='{{url_for('editCategoryItem',item_category_id=item_category.id)}}' method = 'post'>
+    <div class="container">
+      <div class = "row">
+        <div class = "col-xs-4">
+          <label><b>Title</b></label>
+          <input type="text" value='{{ item_category.category_item_name }}' name="title" required/>
+          <p><b>Description</b></p>
+          <input type="text" value='{{ item_category.category_item_description }}' name="description" required/>
+          <!-- <textarea value='{{ item_category.category_item_description }}' name="description" rows = "4" cols ="40" required/>
+          </textarea>
+        <br/> -->
+        <br/>
+        <p><b>Category </b></p>
+          <select name="category">
+            {% for category in categories %}
+              <option value='{{ category.id }}' {% if category.id == item_category_name.id %} selected {% endif %}>{{ category.category_name }}</option>
+            {% endfor %}
+          </select>
+          <br/>
+          <br/>
+          <button type="submit">Update It!</button>
+        </div>
+        <div class = "col-xs-4">
+        </div>
+        <div class = "col-xs-4">
+        </div>
+      </div>
+    </div>
+</form>
+{% endblock %}

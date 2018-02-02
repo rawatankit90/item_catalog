@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %}Delete item{% endblock %}
+{% block header %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+<p> Are you sure you want to delete the item {{ item_delete.category_item_name }} ? </d>
+  <form action='{{url_for('deleteCategoryItem',item_category_id=item_delete.id)}}' method = 'post'>
+      <button type="submit" name="delete">Delete</button>
+        <a href = '{{url_for('homePage')}}'> Cancel </a>
+  </form>
+{% endblock %}
