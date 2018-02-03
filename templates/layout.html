@@ -25,7 +25,7 @@
 						    	<strong> {{ user }} </strong>
 									<a href='{{url_for('logout')}}'>Logout</a>
 									{% else %}
-									 <a href="{{ url_for('login') }}">Login</a>
+									 <a href="{{ url_for('login') }}" class="btn btn-primary" role="button">Login</a>
 						    	{% endif %}
 								{% endblock %}
 							</div>

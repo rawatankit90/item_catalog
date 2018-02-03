@@ -74,6 +74,10 @@ span.psw {
     padding-top: 16px;
 }
 
+.gbtn {
+  padding-top: 10%;
+  padding-left: 5%;
+}
 /* Change styles for span and cancel button on extra small screens */
 @media screen and (max-width: 300px) {
     span.psw {
@@ -83,13 +87,7 @@ span.psw {
     .cancelbtn {
         width: 100%;
     }
-}
-
-@media screen and (min-width: 500px) {
-.extra-padding {
-    padding: 10% 30% 0% 30%;
-}
-.extra-padding-register{
-  padding: 5% 30% 0% 30%;
-}
+    .gbtn {
+        padding-left: 30%;
+    }
 }
