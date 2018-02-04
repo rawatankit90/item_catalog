@@ -79,26 +79,31 @@ def showCategoryItem(category_id):
 #Show Item Description
 @app.route("/category/item/<int:item_category_id>")
 def showCategoryItemDescribtion(item_category_id):
-        if not login_session.get('username'):
-            item_category = session.query(CategoryItem). \
-            filter_by(id=item_category_id).first()
-
-            category = session.query(Category). \
-            filter_by(id=item_category.category_id).first()
-
-            return render_template('itemcategorydetails.html',
+    item_created_by = getUserOfCategory(item_category_id)
+    if not (login_session.get('username')):
+        item_category = session.query(CategoryItem). \
+        filter_by(id=item_category_id).first()
+        category = session.query(Category). \
+        filter_by(id=item_category.category_id).first()
+        return render_template('itemcategorydetails.html',
             item_category = item_category, category = category)
-        else:
-            item_category = session.query(CategoryItem). \
-            filter_by(id=item_category_id).first()
-
-            category = session.query(Category). \
-            filter_by(id=item_category.category_id).first()
-
-            user = login_session.get('username')
-
-            return render_template('itemcategorydetails.html',
-            item_category = item_category, category = category, user = user)
+    elif (login_session.get('username')) != item_created_by:
+        item_category = session.query(CategoryItem). \
+        filter_by(id=item_category_id).first()
+        category = session.query(Category). \
+        filter_by(id=item_category.category_id).first()
+        user = login_session.get('username')
+        print("Item not created by user")
+        return render_template('itemcategorydetails.html',
+            item_category = item_category, category = category, user = user, user_allowed_edit = False)
+    else:
+        item_category = session.query(CategoryItem). \
+        filter_by(id=item_category_id).first()
+        category = session.query(Category). \
+        filter_by(id=item_category.category_id).first()
+        user = login_session.get('username')
+        return render_template('itemcategorydetails.html',
+            item_category = item_category, category = category, user = user, user_allowed_edit = True)
 
 #Add Item
 @app.route("/addcategoryitem",methods=['GET','POST'])
@@ -226,8 +231,8 @@ def registration():
         'registration.html')
 
 #Validate User name and password to check valid user
-@app.route("/loginValidation",methods=['GET','POST'])
-def  loginValidation():
+@app.route("/loginValidation/<string:state>",methods=['GET','POST'])
+def  loginValidation(state):
     if request.method == 'POST':
         #Fetching data from user input
         email_id = request.form['email_id']
@@ -240,7 +245,9 @@ def  loginValidation():
                 #print("Password"+password)
                 #Comparing DB and user Input
                 isPassMatch = userAlreadyPresent.verify_password(password)
-                if isPassMatch:
+                #print ("state value is"+state)
+                #print("login state is"+ login_session.get('state'))
+                if isPassMatch and (state == login_session.get('state')):
                     #state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     #                for x in xrange(32))
                     login_session['username']=email_id
@@ -248,15 +255,15 @@ def  loginValidation():
                     flash("Login Successful")
                     return redirect(url_for('homePage'))
                 else:
-                    return "Incorrect User Name and Password"
+                    flash("Invalid User Id or password")
+                    return redirect(url_for('login'))
             else:
-                flash("Invalid User ID")
+                flash("Invalid User ID or password")
                 return redirect(url_for('login'))
         except Exception as e:
                 return e.message
     else:
-        return render_template(
-            'login.html')
+        return render_template('login.html')
 
 #User Registration Validation and Creation
 @app.route("/register",methods=['GET','POST'])
@@ -269,8 +276,8 @@ def register():
             userAlreadyPresent = session.query(User). \
             filter_by(email_id=email_id).first()
             if userAlreadyPresent:
-                flash("User added Successful")
-                return "User Exists|Please Login"
+                flash("User already exists.Please login ")
+                return render_template('login.html')
             else:
                 user = User(email_id=email_id)
                 user.hash_password(password)
@@ -280,9 +287,11 @@ def register():
                 #                    for x in xrange(32))
                 login_session['username']  = email_id
                 #login_session['state'] = state
+                flash("Welcome ")
                 return redirect(url_for('homePage'))
         except:
-                return "Some Exception"
+            flash("Some error occur. Please try at some time later ")
+            return render_template('registration.html')
     else:
         return render_template(
             'registration.html')
@@ -405,6 +414,13 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['username'] = data['email']
 
+    user_exist = checkUserPresent(login_session.get('username'))
+    if not user_exist:
+        user_created = createUser(login_session)
+        if  user_created == 'success':
+            print ("user_created success")
+            flash("Welcome "+login_session.get('username') +".You are added as user")
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['name']
@@ -415,6 +431,42 @@ def gconnect():
     flash("You are now logged in as %s" % login_session['name'])
     print "done!"
     return output
+
+def getUserOfCategory(item_category_id):
+    item_detail = session.query(CategoryItem).filter_by(id=item_category_id).first()
+    if item_detail is None:
+        return "UserNotPresent"
+    else:
+        return item_detail.created_by
+
+
+def createUser(login_session):
+    try:
+        user = User(email_id=login_session.get('username'),profile_pic=login_session.get('profile_pic'))
+        session.add(user)
+        session.commit()
+        return "success"
+    except Exception as e:
+        session.rollback()
+        return e.message
+
+def checkUserPresent(email_id):
+    try:
+        print ("in check user present")
+        is_user_present = session.query(User).filter_by(email_id=email_id).first()
+        if is_user_present:
+            print ("user found")
+            return True
+        else:
+            print("new User")
+            return False
+    except:
+        print ("some excepttion in checkUserPresent"+ e.message)
+        return False
+
+        #state = ''.join(random.choice(string.ascii_uppercase + string.digits)
+        #                    for x in xrange(32))
+
 #Main Program
 if __name__ == '__main__':
     #login sessionsecret key

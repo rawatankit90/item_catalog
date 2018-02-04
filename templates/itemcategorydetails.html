@@ -11,11 +11,13 @@
         <p style="color:blue">
           <!-- <a href='{{url_for('showCategoryItem', category_id = category.id) }}'> </a>-->
             {{ item_category.category_item_description }}
-            {% if user  %}
+            {% if user %}
+              {% if user_allowed_edit %}
               <p>
                 <a href='{{url_for('editCategoryItem', item_category_id = item_category.id) }}'>Edit |</a>
                 <a href='{{url_for('deleteCategoryItem', item_category_id = item_category.id) }}'>Delete</a>
               </p>
+                {% endif %}
             {% endif %}
         </p>
     </div>
