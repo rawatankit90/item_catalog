@@ -23,6 +23,23 @@ In order to view these files you must have a
 7) You will be directed to home page where user can login or Register himself or User can browse the categories without login
 8) User has option to login with Google
 
+## API End Points
+
+#### JSON APIs to view all Category Information with Items present in Category
+/allCategoryItemApi/JSON
+
+
+#### JSON APIs to view a Item list of Category
+/CategoryItemApi/<int:category_id>/JSON
+
+
+#### JSON APIs to view a single Category
+/CategoryApi/<int:category_id>/JSON
+
+
+#### JSON APIs to view all Category Information
+/allCategoryApi/JSON
+
 ## Built With love from udacity learner
 1) HTML5
 2) CSS3
