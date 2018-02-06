@@ -8,18 +8,17 @@ You can access the files of this project from [ this Github link](https://github
 In order to view these files you must have a
 
 1) A Web broswer(like IE or Chrome) installed on your computer.
-2) A working internet connection.
-3) A Virtual Machine and Vagrant setup to run
-4) Python 2.7 with SQLAlchemy and flask framework setup
+2) A Virtual Machine and Vagrant setup to run
+3) Python 2.7 with SQLAlchemy and flask framework setup
 
 ## With the above steps done
 1) You can access the files from [ this Github link ] (https://github.com/rawatankit90/item_catalog) by clicking the green download button on the right.
 2) Unzip the downloaded file.
 3) Place the above files in Vagrant directory
 4) From Vagrant, SSH to VM [Virtual Machine]  and navigate to the folder "item_catalog" under vagrant folder
-5) Create the database ''''  shoplocal.db ''' using following command ''' python model.py '''
-6) Populate the database using following command ''' python populate_db.py '''
-5) Run the project.py file using command python project.py
+5) Create the database *shoplocal.db* using following command `python model.py`
+6) Populate the database using following command `python populate_db.py`
+5) Run the project.py file using command `python project.py`
 6) Go to your favorite browser and type http://localhost:5000
 7) You will be directed to home page where user can login or Register himself or User can browse the categories without login
 8) User has option to login with Google
